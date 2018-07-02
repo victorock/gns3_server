@@ -6,6 +6,8 @@ Type=forking
 User={{ _gns3_server_service.user }}
 Group={{ _gns3_server_service.group }}
 PermissionsStartOnly=true
+ExecStartPre=/bin/mkdir -p {{ _gns3_server_service.log.path }} {{ _gns3_server_service.run.path }}
+ExecStartPre=/bin/chown -R {{ _gns3_server_service.user }}:{{ _gns3_server_service.group }} {{ _gns3_server_service.log.path }} {{ _gns3_server_service.run.path }}
 ExecStart={{ _gns3_server_service.bin.path }}/{{ _gns3_server_service.bin.file }} \
   --log {{ _gns3_server_service.log.path }}/{{ _gns3_server_service.log.file }} \
   --pid {{ _gns3_server_service.run.path }}/{{ _gns3_server_service.run.file }} \
