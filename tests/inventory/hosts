@@ -1,0 +1,7 @@
+[all:children]
+test
+
+[test:children]
+tag_gns3
+
+[tag_gns3]
