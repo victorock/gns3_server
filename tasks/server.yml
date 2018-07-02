@@ -1,0 +1,53 @@
+- name: "server: Ensure state of packages"
+  become: true
+  become_user: root
+  yum:
+    name: "{{ _gns3_server_package.name | default(_gns3_server_package) }}"
+    state: "{{ _gns3_server_package.state | default(omit) }}"
+    update_cache: "{{ _gns3_server_package.update_cache | default(omit) }}"
+  loop: "{{ _gns3_server_packages }}"
+  loop_control:
+    loop_var: _gns3_server_package
+
+- name: "server: Ensure state of pip_packages"
+  become: true
+  become_user: root
+  pip:
+    name: "{{ _gns3_server_pip_package.name | default(_gns3_server_pip_package) }}"
+    version: "{{ _gns3_server_pip_package.version | default(omit) }}"
+    virtualenv: "{{ _gns3_server_pip_package.virtualenv | default(omit) }}"
+    state: "{{ _gns3_server_pip_package.state | default(omit) }}"
+    executable: "{{ _gns3_server_pip_package.executable | default(omit) }}"
+    extra_args: "{{ _gns3_server_pip_package.extra_args | default(omit) }}"
+  loop: "{{ _gns3_server_pip_packages }}"
+  loop_control:
+    loop_var: _gns3_server_pip_package
+
+- name: "server: Ensure state of systemd unit"
+  become: true
+  become_user: root
+  template:
+    src: "{{ _gns3_server_service.unit.file }}.j2"
+    dest: "{{ _gns3_server_service.unit.path }}/{{ _gns3_server_service.unit.file }}"
+    mode: 0755
+    owner: root
+    group: root
+
+- name: "server: Ensure state of config file"
+  become: true
+  become_user: root
+  template:
+    src: "{{ _gns3_server_service.config.file }}.j2"
+    dest: "{{ _gns3_server_service.config.path }}/{{ _gns3_server_service.config.file }}"
+    mode: 0660
+    owner: "{{ _gns3_server_service.user }}"
+    group: "{{ _gns3_server_service.group }}"
+  notify: gns3_server_service_restart
+
+- name: "server: Ensure state of service"
+  become: true
+  become_user: root
+  service:
+    name: "{{ _gns3_server_service.name }}"
+    state: "{{ _gns3_server_service.state }}"
+    enabled: "{{ _gns3_server_service.enabled }}"

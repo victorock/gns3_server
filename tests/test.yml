@@ -1,5 +1,5 @@
 ---
-- hosts: gns3
+- hosts: test
   gather_facts: yes
 
   roles:

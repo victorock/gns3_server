@@ -1,0 +1,45 @@
+---
+- name: "ubridge: Ensure state of binary"
+  become: true
+  become_user: root
+  file:
+    path: "/usr/local/bin/ubridge"
+    state: "{{ gns3_server_ubridge_state }}"
+  notify: gns3_server_service_restart
+  when: "gns3_server_ubridge_state == 'absent'"
+
+- name: "ubridge: Stat binary"
+  become: true
+  become_user: root
+  stat:
+    path: "/usr/local/bin/ubridge"
+  register: _ubridge_binary
+
+- name: "ubridge: Clone repository"
+  become: yes
+  become_user: "{{ _gns3_server_service.user }}"
+  git:
+    repo: "https://github.com/gns3/ubridge"
+    dest: "{{ gns3_server_build_path }}/ubridge"
+    clone: yes
+  when:
+    - not _ubridge_binary.stat.executable
+    - "gns3_server_ubridge_state != 'absent'"
+
+- name: "ubridge: Install with make"
+  become: yes
+  become_user: root
+  make:
+    chdir: "{{ gns3_server_build_path }}/ubridge"
+    target: install
+  notify: gns3_server_service_restart
+  when:
+    - not _ubridge_binary.stat.executable
+    - "gns3_server_ubridge_state != 'absent'"
+
+- name: "ubridge: Ensure absence of repository"
+  become: yes
+  become_user: root
+  file:
+    path: "{{ gns3_server_build_path }}/ubridge"
+    state: absent

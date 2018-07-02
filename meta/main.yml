@@ -2,8 +2,8 @@
 dependencies: []
 
 galaxy_info:
-  author: Victor da Costa (@victorock)
-  description: Ansible role to install GNS3 Server.
+  author: "Victor da Costa (@victorock)"
+  description: "Ansible role to install GNS3: Server, Dynamips, uBridge and IOUYAP."
   company: victorock
   license: GPLv3
   min_ansible_version: 2.6

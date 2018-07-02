@@ -1,7 +1,7 @@
 Ansible Role to Install GNS3 Server
 =========
 
-Ansible role to install GNS3 Server.
+Ansible role to install GNS3: Server, Dynamips, uBridge and IOUYAP
 
 Role Variables
 --------------
@@ -12,6 +12,7 @@ Variables are defined in `defaults/main.yml` and structured/encapsulated in `var
 |-------------------|---------------------|----------------------|
 | `autorun` | `False`  | Boolean to define if the role "autorun" (`tasks/main.yml`). Useful when you want to have dependencies solved by galaxy (`meta/main.yml`) but don't want it to run automatically.  |
 | `gns3_server_user` | `gns3`  | The system account to run GNS3 Server service. |
+| `gns3_server_password` | `!NetWorkPod!`  | The password (text) for the GNS3 account. |
 | `gns3_server_group` | `gns3` | The group to run GNS3 Server service. |
 | `gns3_server_host` | `0.0.0.0` | The address to listen for connections. |
 | `gns3_server_port` | `3080` | The port to listen for connections. |
@@ -23,6 +24,9 @@ Variables are defined in `defaults/main.yml` and structured/encapsulated in `var
 | `gns3_server_report_errors` | `True` | Boolean to define if service shall report errors. |
 | `gns3_server_qemu_enable_kvm` | `True` | Boolean to define if kvm shall be used when running instances. |
 | `gns3_server_qemu_require_kvm` | `True` | Boolean to define if kvm is required by the service. |
+| `gns3_server_dynamips_state` | `present` | Desired state of dynamips: `present`, `absent` or `latest` (always rebuild) |
+| `gns3_server_ubridge_state` | `present` | Desired state of ubridge: `present`, `absent` or `latest` (always rebuild) |
+| `gns3_server_iouyap_state` | `present` | Desired state of iouyap: : `present`, `absent` or `latest` (always rebuild) |
 
 
 Examples
@@ -58,11 +62,19 @@ Follow below different examples and ways to use this role.
     gns3_server_home: "/home/gns3"
 
   roles:
-    - role: victorock.gns3-server
+    - role: victorock.gns3_server
       autorun: true
 
 ```
 
+Requirements
+--------------
+
+You need to install kvm/qemu.
+
+You can use your own roles to install or:
+- victorock.libvirt
+- victorock.cockpit
 
 License
 ------------

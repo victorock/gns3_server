@@ -1,0 +1,35 @@
+services: docker
+
+env:
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+
+  - distro: centos7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+
+before_install:
+  # Pull container.
+  - 'docker pull samdoran/${distro}-ansible:latest'
+
+script:
+  - container_id=$(mktemp)
+
+  # Run container in detached state.
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/test:ro ${run_opts} samdoran/${distro}-ansible:latest "${init}" > "${container_id}"'
+
+  # Install ansible-lint
+  - 'docker exec --tty "$(cat ${container_id})" pip install ansible-lint'
+
+  # Run ansible-lint test
+  - 'docker exec --tty "$(cat ${container_id})" ansible-lint /etc/ansible/roles/test/tests/test.yml'
+
+  # Ansible syntax check.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -i /etc/ansible/roles/test/tests/inventory /etc/ansible/roles/test/tests/test.yml --syntax-check'
+
+  # Test role.
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook -i /etc/ansible/roles/test/tests/inventory /etc/ansible/roles/test/tests/test.yml'
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

@@ -9,6 +9,7 @@ _gns3_server_service:
   user: "{{ gns3_server_user }}"
   group: "{{ gns3_server_group }}"
   home: "{{ gns3_server_home }}"
+  password: "{{ gns3_server_password | password_hash('sha512') }}"
   log:
     path: "/var/log/gns3/"
     file: "gns3.log"
@@ -28,6 +29,7 @@ _gns3_server_paths:
   - "{{ _gns3_server_service.home }}"
   - "{{ _gns3_server_service.log.path }}"
   - "{{ _gns3_server_service.run.path }}"
+  - "{{ gns3_server_build_path }}"
   - "{{ gns3_server_images_path }}"
   - "{{ gns3_server_projects_path }}"
   - "{{ gns3_server_appliances_path }}"
