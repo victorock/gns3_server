@@ -42,6 +42,7 @@ _gns3_server_packages:
 
   - name:
       - "@Development tools"
+      - git
       - python34
       - python34-devel
       - python34-setuptools

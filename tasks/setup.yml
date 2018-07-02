@@ -26,3 +26,14 @@
   loop: "{{ _gns3_server_paths }}"
   loop_control:
     loop_var: _gns3_server_path
+
+- name: "setup: Ensure state of packages"
+  become: true
+  become_user: root
+  yum:
+    name: "{{ _gns3_server_package.name | default(_gns3_server_package) }}"
+    state: "{{ _gns3_server_package.state | default(omit) }}"
+    update_cache: "{{ _gns3_server_package.update_cache | default(omit) }}"
+  loop: "{{ _gns3_server_packages }}"
+  loop_control:
+    loop_var: _gns3_server_package
