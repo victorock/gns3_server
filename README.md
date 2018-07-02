@@ -12,6 +12,7 @@ Variables are defined in `defaults/main.yml` and structured/encapsulated in `var
 |-------------------|---------------------|----------------------|
 | `autorun` | `False`  | Boolean to define if the role "autorun" (`tasks/main.yml`). Useful when you want to have dependencies solved by galaxy (`meta/main.yml`) but don't want it to run automatically.  |
 | `gns3_server_user` | `gns3`  | The system account to run GNS3 Server service. |
+| `gns3_server_password` | `!NetWorkPod!`  | The password (text) for the GNS3 account. |
 | `gns3_server_group` | `gns3` | The group to run GNS3 Server service. |
 | `gns3_server_host` | `0.0.0.0` | The address to listen for connections. |
 | `gns3_server_port` | `3080` | The port to listen for connections. |
@@ -58,11 +59,19 @@ Follow below different examples and ways to use this role.
     gns3_server_home: "/home/gns3"
 
   roles:
-    - role: victorock.gns3-server
+    - role: victorock.gns3_server
       autorun: true
 
 ```
 
+Requirements
+--------------
+
+You need to install libvirt and kvm/qemu.
+
+You can use your own installation, or use:
+- victorock.libvirt
+- victorock.cockpit
 
 License
 ------------

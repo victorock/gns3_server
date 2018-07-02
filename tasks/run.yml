@@ -34,6 +34,7 @@
     name: "{{ _gns3_server_service.user }}"
     group: "{{ _gns3_server_service.group }}"
     home: "{{ _gns3_server_service.home }}"
+    password: "{{ _gns3_server_service.password }}"
     system: yes
 
 - name: "Ensure state of paths"

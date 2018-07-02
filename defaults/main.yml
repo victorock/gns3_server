@@ -1,6 +1,7 @@
 ---
 gns3_server_user: "gns3"
 gns3_server_group: "gns3"
+gns3_server_password: "!NetWorkPod!"
 gns3_server_host: "0.0.0.0"
 gns3_server_port: "3080"
 gns3_server_home: "/opt/gns3"
