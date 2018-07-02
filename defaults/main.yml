@@ -5,6 +5,7 @@ gns3_server_password: "!NetWorkPod!"
 gns3_server_host: "0.0.0.0"
 gns3_server_port: "3080"
 gns3_server_home: "/opt/gns3"
+gns3_server_build_path: "{{ gns3_server_home }}/build"
 gns3_server_images_path: "{{ gns3_server_home }}/images"
 gns3_server_projects_path: "{{ gns3_server_home }}/projects"
 gns3_server_appliances_path: "{{ gns3_server_home }}/appliances"
@@ -12,3 +13,6 @@ gns3_server_configs_path: "{{ gns3_server_home }}/configs"
 gns3_server_report_errors: True
 gns3_server_qemu_enable_kvm: True
 gns3_server_qemu_require_kvm: True
+gns3_server_dynamips_state: "present"
+gns3_server_iouyap_state: "present"
+gns3_server_ubridge_state: "present"

@@ -1,0 +1,28 @@
+- name: "setup: Ensure state of system account group"
+  become: true
+  become_user: root
+  group:
+    name: "{{ _gns3_server_service.group }}"
+    system: yes
+
+- name: "setup: Ensure state of system account user"
+  become: true
+  become_user: root
+  user:
+    name: "{{ _gns3_server_service.user }}"
+    group: "{{ _gns3_server_service.group }}"
+    home: "{{ _gns3_server_service.home }}"
+    password: "{{ _gns3_server_service.password }}"
+    system: yes
+
+- name: "setup: Ensure state of paths"
+  become: true
+  become_user: root
+  file:
+    path: "{{ _gns3_server_path }}"
+    owner: "{{ _gns3_server_service.user }}"
+    group: "{{ _gns3_server_service.group }}"
+    state: directory
+  loop: "{{ _gns3_server_paths }}"
+  loop_control:
+    loop_var: _gns3_server_path

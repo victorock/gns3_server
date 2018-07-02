@@ -1,7 +1,7 @@
 Ansible Role to Install GNS3 Server
 =========
 
-Ansible role to install GNS3 Server.
+Ansible role to install GNS3: Server, Dynamips, uBridge and IOUYAP
 
 Role Variables
 --------------
@@ -24,6 +24,9 @@ Variables are defined in `defaults/main.yml` and structured/encapsulated in `var
 | `gns3_server_report_errors` | `True` | Boolean to define if service shall report errors. |
 | `gns3_server_qemu_enable_kvm` | `True` | Boolean to define if kvm shall be used when running instances. |
 | `gns3_server_qemu_require_kvm` | `True` | Boolean to define if kvm is required by the service. |
+| `gns3_server_dynamips_state` | `present` | Desired state of dynamips: `present`, `absent` or `latest` (always rebuild) |
+| `gns3_server_ubridge_state` | `present` | Desired state of ubridge: `present`, `absent` or `latest` (always rebuild) |
+| `gns3_server_iouyap_state` | `present` | Desired state of iouyap: : `present`, `absent` or `latest` (always rebuild) |
 
 
 Examples
@@ -67,9 +70,9 @@ Follow below different examples and ways to use this role.
 Requirements
 --------------
 
-You need to install libvirt and kvm/qemu.
+You need to install kvm/qemu.
 
-You can use your own installation, or use:
+You can use your own roles to install or:
 - victorock.libvirt
 - victorock.cockpit
 

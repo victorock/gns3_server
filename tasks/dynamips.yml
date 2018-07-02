@@ -1,0 +1,65 @@
+---
+- name: "dynamips: Ensure state of binary (dynamips)"
+  become: yes
+  become_user: root
+  file:
+    path: "/usr/local/bin/dynamips"
+    state: "{{ gns3_server_dynamips_state }}"
+  notify: gns3_server_service_restart
+  when: "gns3_server_dynamips_state == 'absent'"
+
+- name: "dynamips: Ensure state of binary (nvram_export)"
+  become: yes
+  become_user: root
+  file:
+    path: "/usr/local/bin/nvram_export"
+    state: "{{ gns3_server_dynamips_state }}"
+  notify: gns3_server_service_restart
+  when: "gns3_server_dynamips_state == 'absent'"
+
+- name: "dynamips: Check existence of binary (dynamips)"
+  become: yes
+  become_user: root
+  stat:
+    path: "/usr/local/bin/dynamips"
+  register: _dynamips_binary
+
+- name: "dynamips: Clone repository"
+  become: yes
+  become_user: "{{ _gns3_server_service.user }}"
+  git:
+    repo: "https://github.com/gns3/dynamips"
+    dest: "{{ gns3_server_build_path }}/dynamips"
+    clone: yes
+  when:
+    - not _dynamips_binary.stat.executable
+    - "gns3_server_dynamips_state != 'absent'"
+
+- name: "dynamips: Generate makefiles with cmake"
+  become: yes
+  become_user: "{{ _gns3_server_service.user }}"
+  shell:
+    cmake .
+  args:
+    chdir: "{{ gns3_server_build_path }}/dynamips"
+  when:
+    - not _dynamips_binary.stat.executable
+    - "gns3_server_dynamips_state != 'absent'"
+
+- name: "dynamips: Install with make"
+  become: yes
+  become_user: root
+  make:
+    chdir: "{{ gns3_server_build_path }}/dynamips"
+    target: install
+  notify: gns3_server_service_restart
+  when:
+    - not _dynamips_binary.stat.executable
+    - "gns3_server_dynamips_state != 'absent'"
+
+- name: "dynamips: Ensure absence of repository"
+  become: yes
+  become_user: root
+  file:
+    path: "{{ gns3_server_build_path }}/dynamips"
+    state: absent

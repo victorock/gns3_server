@@ -1,0 +1,45 @@
+---
+- name: "iouyap: Ensure state of binary"
+  become: yes
+  become_user: root
+  file:
+    path: "/usr/local/bin/iouyap"
+    state: "{{ gns3_server_iouyap_state }}"
+  notify: gns3_server_service_restart
+  when: "gns3_server_iouyap_state == 'absent'"
+
+- name: "iouyap: Check existence of binary"
+  become: yes
+  become_user: root
+  stat:
+    path: "/usr/local/bin/iouyap"
+  register: _iouyap_binary
+
+- name: "iouyap: Clone repository"
+  become: yes
+  become_user: "{{ _gns3_server_service.user }}"
+  git:
+    repo: "https://github.com/gns3/iouyap"
+    dest: "{{ gns3_server_build_path }}/iouyap"
+    clone: yes
+  when:
+    - not _iouyap_binary.stat.executable
+    - "gns3_server_iouyap_state != 'absent'"
+
+- name: "iouyap: Install with make"
+  become: yes
+  become_user: root
+  make:
+    chdir: "{{ gns3_server_build_path }}/iouyap"
+    target: install
+  notify: gns3_server_service_restart
+  when:
+    - not _iouyap_binary.stat.executable
+    - "gns3_server_iouyap_state != 'absent'"
+
+- name: "iouyap: Ensure absence of repository"
+  become: yes
+  become_user: root
+  file:
+    path: "{{ gns3_server_build_path }}/iouyap"
+    state: absent
