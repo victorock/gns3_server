@@ -1,0 +1,14 @@
+---
+- hosts: gns3
+  gather_facts: yes
+
+  roles:
+    - role: test
+      autorun: true
+
+  tasks:
+
+    - name: test
+      include_role:
+        name: test
+        tasks_from: run

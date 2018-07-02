@@ -1,0 +1,5 @@
+- name: gns3_server_service_restart
+  become: true
+  service:
+    name: "{{ _gns3_server_service.name }}"
+    state: restarted

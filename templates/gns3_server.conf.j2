@@ -1,0 +1,12 @@
+[Server]
+host = {{ gns3_server_host }}
+port = {{ gns3_server_port }}
+images_path = {{ gns3_server_images_path }}
+projects_path = {{ gns3_server_projects_path }}
+appliances_path = {{ gns3_server_appliances_path }}
+configs_path = {{ gns3_server_configs_path }}
+report_errors = {{ gns3_server_report_errors | bool }}
+
+[Qemu]
+enable_kvm = {{ gns3_server_qemu_enable_kvm | bool }}
+require_kvm = {{ gns3_server_qemu_require_kvm | bool }}
