@@ -23,7 +23,7 @@
     dest: "{{ gns3_server_build_path }}/iouyap"
     clone: yes
   when:
-    - not _iouyap_binary.stat.executable
+    - not _iouyap_binary.stat.exists
     - "gns3_server_iouyap_state != 'absent'"
 
 - name: "iouyap: Install with make"
@@ -34,7 +34,7 @@
     target: install
   notify: gns3_server_service_restart
   when:
-    - not _iouyap_binary.stat.executable
+    - not _iouyap_binary.stat.exists
     - "gns3_server_iouyap_state != 'absent'"
 
 - name: "iouyap: Ensure absence of repository"
