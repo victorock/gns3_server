@@ -23,7 +23,7 @@
     dest: "{{ gns3_server_build_path }}/ubridge"
     clone: yes
   when:
-    - not _ubridge_binary.stat.executable
+    - not _ubridge_binary.stat.exists
     - "gns3_server_ubridge_state != 'absent'"
 
 - name: "ubridge: Install with make"
@@ -34,7 +34,7 @@
     target: install
   notify: gns3_server_service_restart
   when:
-    - not _ubridge_binary.stat.executable
+    - not _ubridge_binary.stat.exists
     - "gns3_server_ubridge_state != 'absent'"
 
 - name: "ubridge: Ensure absence of repository"

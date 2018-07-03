@@ -32,7 +32,7 @@
     dest: "{{ gns3_server_build_path }}/dynamips"
     clone: yes
   when:
-    - not _dynamips_binary.stat.executable
+    - not _dynamips_binary.stat.exists
     - "gns3_server_dynamips_state != 'absent'"
 
 - name: "dynamips: Generate makefiles with cmake"
@@ -43,7 +43,7 @@
   args:
     chdir: "{{ gns3_server_build_path }}/dynamips"
   when:
-    - not _dynamips_binary.stat.executable
+    - not _dynamips_binary.stat.exists
     - "gns3_server_dynamips_state != 'absent'"
 
 - name: "dynamips: Install with make"
@@ -54,7 +54,7 @@
     target: install
   notify: gns3_server_service_restart
   when:
-    - not _dynamips_binary.stat.executable
+    - not _dynamips_binary.stat.exists
     - "gns3_server_dynamips_state != 'absent'"
 
 - name: "dynamips: Ensure absence of repository"
